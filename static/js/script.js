@@ -2,7 +2,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.2/firebase
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js';
 
 
-// Your Firebase configuration
+//Your Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyCFn92ld5RXyzfyKoO9MLx6lrWIVVlSW_Y",
     authDomain: "speakeridentificationsystem.firebaseapp.com",
@@ -12,7 +12,6 @@ const firebaseConfig = {
     appId: "1:472860465046:web:ffbbf188f4ab9a21caafb7",
     measurementId: "G-T1K75N260B"
 };
-
 // const firebaseConfig = {
 //     apiKey: "AIzaSyDx6w33VvYCQZ7LrFbEMkb0977pSJsUobc",
 //     authDomain: "speaker-identification-system.firebaseapp.com",
@@ -24,13 +23,10 @@ const firebaseConfig = {
 // };
 
 
-
 // Initialize Firebase and set up session persistence
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 setUpSessionPersistence();
-
-
 
 
 
@@ -56,7 +52,6 @@ function validatePassword(password) {
 }
 
 // Function to show the logout modal
-// Function to show the logout modal
 function showLogoutModal() {
     // Check if the user is logged in
     if (auth.currentUser) {
@@ -80,7 +75,7 @@ function startLogoutTimer() {
     logoutTimer = setTimeout(() => {
         // Call logout function after 10 minutes of inactivity
         logoutUser2();
-    }, 600000); // 10 minutes in milliseconds
+    }, 60000); // 10 minutes in milliseconds
 }
 
 // Function to reset the logout timer on user activity
@@ -94,7 +89,6 @@ document.addEventListener('keypress', resetLogoutTimer);
 document.addEventListener('click', resetLogoutTimer);
 
 // Function to update UI after successful login
-// Function to update UI after successful login
 function updateUIAfterLogin(user) {
     // Close login modal
     $('#loginModal').modal('hide');
@@ -104,14 +98,11 @@ function updateUIAfterLogin(user) {
     document.getElementById('loginLink').style.display = 'none';
     document.getElementById('signupLink').style.display = 'none';
     document.getElementById('modalLogout').style.display = 'block';
-    // Show logout button
-    document.getElementById('logout').style.display = 'block';
-    // Hide logout modal (if open)
-    $('#loginModal').modal('hide');
+    // // Show logout modal
+    // $('#logoutModal').modal('show');
     // Start the logout timer
     startLogoutTimer();
 }
-
 // Function to set up session persistence
 function setUpSessionPersistence() {
     // Set persistence to 'LOCAL'
@@ -124,16 +115,17 @@ function setUpSessionPersistence() {
                 // Call updateUIAfterLogin with the signed-in user
                 updateUIAfterLogin(auth.currentUser);
             }
+
         })
         .catch((error) => {
             console.error("Error setting persistence:", error);
         });
 }
-
 // Function to start the logout timer when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     startLogoutTimer();
 });
+
 
 // Login function
 function loginUser() {
@@ -241,6 +233,12 @@ function signupUser() {
             // Show login modal
             $('#loginModal').modal('show');
 
+            // Clear email and password fields
+            document.getElementById('signupFirstName').value = '';
+            document.getElementById('signupLastName').value = '';
+            document.getElementById('signupEmail').value = '';
+            document.getElementById('signupPassword').value = '';
+
             // Hide loader
             hideLoader();
         })
@@ -298,7 +296,6 @@ document.querySelector('#logout').addEventListener('click', function (event) {
     logoutUser();
 });
 // Logout function
-// Logout function
 function logoutUser() {
     // Show confirmation alert
     if (confirm('Are you sure you want to logout?')) {
@@ -342,9 +339,6 @@ function logoutUser2() {
 
 }
 
-// window.addEventListener('load', () => {
-//     logoutUser();
-// });
 
 // Function to handle "Forgot Password?" button click
 document.querySelector('#forgotPassword').addEventListener('click', function (event) {
@@ -388,14 +382,10 @@ function resetPassword(email) {
         });
 
 }
-
-
-    // Function to check if the user is logged in
-   // Function to check if the user is logged in
 // Function to check if the user is logged in
 function isLoggedIn() {
-    console.log("function called")
-    console.log(auth.currentUser)
+    // console.log("function called")
+    // console.log(auth.currentUser)
     
     // Check if 'auth' is defined and if the user is logged in
     if (typeof auth !== 'undefined' && auth.currentUser) {
@@ -411,7 +401,7 @@ function recordVoiceClicked() {
     if (isLoggedIn()) {
         // User is logged in, navigate to the record voice page
          window.location.href = "/record_train";
-        console.log("User logged in, navigating to record train page");
+        // console.log("User logged in, navigating to record train page");
     } else {
         // User is not logged in, display an alert and open the login modal
         alert("Please log in to access this feature.");
@@ -423,7 +413,7 @@ function recordVoiceClicked2() {
     if (isLoggedIn()) {
         // User is logged in, navigate to the record voice page
          window.location.href = "/record_test";
-        console.log("User logged in, navigating to record train page");
+        // console.log("User logged in, navigating to record train page");
     } else {
         // User is not logged in, display an alert and open the login modal
         alert("Please log in to access this feature.");
@@ -435,15 +425,3 @@ function recordVoiceClicked2() {
 // Attach click event handlers to elements with IDs 'logincheck' and 'logincheck2'
 document.getElementById('logincheck').addEventListener('click', recordVoiceClicked);
 document.getElementById('logincheck2').addEventListener('click', recordVoiceClicked2);
-
-
-//user dashboard
-
-
-
-  
-
-
-
-
-
