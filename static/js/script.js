@@ -78,6 +78,7 @@ function showLogoutModal() {
 }
 
 // Function to update UI after successful login
+// Function to update UI after successful login
 function updateUIAfterLogin(user) {
     // Close login modal
     $('#loginModal').modal('hide');
@@ -87,8 +88,10 @@ function updateUIAfterLogin(user) {
     document.getElementById('loginLink').style.display = 'none';
     document.getElementById('signupLink').style.display = 'none';
     document.getElementById('modalLogout').style.display = 'block';
-    // // Show logout modal
-    // $('#logoutModal').modal('show');
+    // Show logout button
+    document.getElementById('logout').style.display = 'block';
+    // Hide logout modal (if open)
+    $('#loginModal').modal('hide');
 }
 
 
