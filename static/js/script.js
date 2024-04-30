@@ -23,22 +23,12 @@ const firebaseConfig = {
 //     measurementId: "G-2G3KE344MS"
 // };
 
-// // Function to set up session persistence
-// function setUpSessionPersistence() {
-//     // Set persistence to 'LOCAL'
-//     setPersistence(auth, browserLocalPersistence)
-//         .then(() => {
-//             console.log("Session persistence set to LOCAL");
-//         })
-//         .catch((error) => {
-//             console.error("Error setting persistence:", error);
-//         });
-// }
+
 
 // Initialize Firebase and set up session persistence
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-// setUpSessionPersistence();
+setUpSessionPersistence();
 
 
 
@@ -77,6 +67,32 @@ function showLogoutModal() {
     }
 }
 
+let logoutTimer; // Variable to store the logout timer
+
+// Function to start the logout timer
+function startLogoutTimer() {
+    // Clear existing timer if any
+    if (logoutTimer) {
+        clearTimeout(logoutTimer);
+    }
+
+    // Set a new timer for 10 minutes (600000 milliseconds)
+    logoutTimer = setTimeout(() => {
+        // Call logout function after 10 minutes of inactivity
+        logoutUser2();
+    }, 600000); // 10 minutes in milliseconds
+}
+
+// Function to reset the logout timer on user activity
+function resetLogoutTimer() {
+    startLogoutTimer(); // Restart the timer on user activity
+}
+
+// Add event listeners to detect user activity and reset the logout timer
+document.addEventListener('mousemove', resetLogoutTimer);
+document.addEventListener('keypress', resetLogoutTimer);
+document.addEventListener('click', resetLogoutTimer);
+
 // Function to update UI after successful login
 // Function to update UI after successful login
 function updateUIAfterLogin(user) {
@@ -92,8 +108,32 @@ function updateUIAfterLogin(user) {
     document.getElementById('logout').style.display = 'block';
     // Hide logout modal (if open)
     $('#loginModal').modal('hide');
+    // Start the logout timer
+    startLogoutTimer();
 }
 
+// Function to set up session persistence
+function setUpSessionPersistence() {
+    // Set persistence to 'LOCAL'
+    setPersistence(auth, browserLocalPersistence)
+        .then(() => {
+            console.log("Session persistence set to LOCAL");
+            // console.log(auth.currentUser.email);
+            // Check if there is a signed-in user
+            if (auth.currentUser) {
+                // Call updateUIAfterLogin with the signed-in user
+                updateUIAfterLogin(auth.currentUser);
+            }
+        })
+        .catch((error) => {
+            console.error("Error setting persistence:", error);
+        });
+}
+
+// Function to start the logout timer when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    startLogoutTimer();
+});
 
 // Login function
 function loginUser() {
@@ -258,11 +298,35 @@ document.querySelector('#logout').addEventListener('click', function (event) {
     logoutUser();
 });
 // Logout function
+// Logout function
 function logoutUser() {
+    // Show confirmation alert
+    if (confirm('Are you sure you want to logout?')) {
+        // Proceed with logout
+        auth.signOut().then(() => {
+            // Sign-out successful.
+            console.log('User signed out');
+            // Hide logout modal
+            $('#logoutModal').modal('hide');
+            // Show login and signup links
+            document.getElementById('loginLink').style.display = 'block';
+            document.getElementById('signupLink').style.display = 'block';
+            document.getElementById('modalLogout').style.display = 'none';
+            // Clear welcome message
+            document.getElementById('welcomeMessage').innerText = '';
+        }).catch((error) => {
+            // An error happened.
+            console.error('Logout error:', error);
+        });
+    }
+}
+
+// Logout function
+function logoutUser2() {
+    // Proceed with logout
     auth.signOut().then(() => {
         // Sign-out successful.
         console.log('User signed out');
-        // alert('Sign out Successfully !....');
         // Hide logout modal
         $('#logoutModal').modal('hide');
         // Show login and signup links
@@ -275,11 +339,12 @@ function logoutUser() {
         // An error happened.
         console.error('Logout error:', error);
     });
+
 }
 
-window.addEventListener('load', () => {
-    logoutUser();
-});
+// window.addEventListener('load', () => {
+//     logoutUser();
+// });
 
 // Function to handle "Forgot Password?" button click
 document.querySelector('#forgotPassword').addEventListener('click', function (event) {

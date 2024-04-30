@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg   ">
+    <nav class="navbar navbar-expand-lg  fixed-top ">
         <div class="container-fluid">
            
             <a class="navbar-brand" href="#">
@@ -57,28 +57,7 @@
                 <ul class="navbar-nav ml-auto">
                     <span id="welcomeMessage" class="text-light"></span>
                     <button id="modalLogout" style="display: none;" class="btn-danger ml-2">Dashboard</button>
-                    <!-- Logout Modal -->
-                    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-                        aria-labelledby="logoutModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="dashboardModalLabel">Dashboard</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>User Email: <span id="userEmail"></span></p>
-                                    <p>Click <a href="/dashboard">here</a> to go to the Dashboard.</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="button" id="logout" class="btn btn-primary">Logout</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <li class=" nav-item">
                                         <a class="nav-link text-white" href="#" id="loginLink" data-toggle="modal"
                                             data-target="#loginModal">Login</a>
@@ -91,6 +70,29 @@
             </div>
         </div>
     </nav>
+
+    <!-- Logout Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+    aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dashboardModalLabel">Dashboard</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>User Email: <span id="userEmail"></span></p>
+                <p>Click <a href="/dashboard">here</a> to go to the Dashboard.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" id="logout" class="btn btn-primary">Logout</button>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
@@ -235,6 +237,7 @@ aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
             </div>
         </div>
     </div>
+    <br><br><br>
     
     <div id="about-us">
         <br>
@@ -256,7 +259,7 @@ aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
             <br>
             <h1 class="mt-2">Our Team</h1>
 
-            <div id="carouselExampleIndicators" class="carousel slide" data-bs-interval="3000" data-ride="carousel">
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-interval="1000" data-ride="carousel">
                 <ol class="carousel-indicators">
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
