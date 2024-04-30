@@ -3,24 +3,25 @@ import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, se
 
 
 // Your Firebase configuration
-// const firebaseConfig = {
-//     apiKey: "AIzaSyCFn92ld5RXyzfyKoO9MLx6lrWIVVlSW_Y",
-//     authDomain: "speakeridentificationsystem.firebaseapp.com",
-//     projectId: "speakeridentificationsystem",
-//     storageBucket: "speakeridentificationsystem.appspot.com",
-//     messagingSenderId: "472860465046",
-//     appId: "1:472860465046:web:ffbbf188f4ab9a21caafb7",
-//     measurementId: "G-T1K75N260B"
-// };
 const firebaseConfig = {
-    apiKey: "AIzaSyDx6w33VvYCQZ7LrFbEMkb0977pSJsUobc",
-    authDomain: "speaker-identification-system.firebaseapp.com",
-    projectId: "speaker-identification-system",
-    storageBucket: "speaker-identification-system.appspot.com",
-    messagingSenderId: "733461261375",
-    appId: "1:733461261375:web:56efe66791cc379cfc9c8a",
-    measurementId: "G-2G3KE344MS"
+    apiKey: "AIzaSyCFn92ld5RXyzfyKoO9MLx6lrWIVVlSW_Y",
+    authDomain: "speakeridentificationsystem.firebaseapp.com",
+    projectId: "speakeridentificationsystem",
+    storageBucket: "speakeridentificationsystem.appspot.com",
+    messagingSenderId: "472860465046",
+    appId: "1:472860465046:web:ffbbf188f4ab9a21caafb7",
+    measurementId: "G-T1K75N260B"
 };
+
+// const firebaseConfig = {
+//     apiKey: "AIzaSyDx6w33VvYCQZ7LrFbEMkb0977pSJsUobc",
+//     authDomain: "speaker-identification-system.firebaseapp.com",
+//     projectId: "speaker-identification-system",
+//     storageBucket: "speaker-identification-system.appspot.com",
+//     messagingSenderId: "733461261375",
+//     appId: "1:733461261375:web:56efe66791cc379cfc9c8a",
+//     measurementId: "G-2G3KE344MS"
+// };
 
 // // Function to set up session persistence
 // function setUpSessionPersistence() {
