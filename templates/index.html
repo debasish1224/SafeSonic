@@ -13,7 +13,16 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top ">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Speaker Identification System</a>
+           
+            <a class="navbar-brand" href="#">
+              
+                    <b>
+                      <img src="/static/Logo2.png" alt="Your Logo" height="30" />
+                      
+                    </b>
+                  
+                  
+                </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -198,8 +207,8 @@ aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
         <br><br>
         <h1 >Welcome to Speaker Identification System</h1>
         <br>
-        <a href="{{ url_for('record_train') }}" class="btn btn-primary">Train Model by Recording Audio</a>
-        <a href="{{ url_for('record_test') }}" class="btn btn-success">Test Model by Recording Audio</a>
+        <a href="{{ url_for('record_train') }}" class="btn btn-primary">Record Voice</a>
+        <a href="{{ url_for('record_test') }}" class="btn btn-success">Match your Audio</a>
     </div>
 
     <div id="about-us">
