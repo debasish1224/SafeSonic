@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMM Models Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mt-5 mb-4">Your Audio Models Dashboard: Edit, Rename, and Remove</h1>
+
+        <!-- Model List -->
+        <div class="model-list">
+            <h2 class="mb-3">Saved Models</h2>
+
+            <!-- Model List Table -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>S.NO.</th>
+                        <th>Model Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="model-list">
+                    <!-- Models will be dynamically added here -->
+                    {% for model in models %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ model }}</td>
+                        <td>
+                            <!-- Buttons for managing models -->
+                            <button class="btn btn-primary btn-sm mr-2" onclick="renameModel('{{ model }}')">Rename</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteModel('{{ model }}')">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+
+        // Function to fetch models from the server and populate the list
+        function fetchModels() {
+                fetch('/get_models')
+                    .then(response => response.json())
+                    .then(data => {
+                        const modelList = document.getElementById('model-list');
+                        modelList.innerHTML = ''; // Clear existing list items
+                        data.models.forEach((model, index) => {
+                            // Creating table row for each model
+                            const row = `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${model}</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm mr-2" onclick="renameModel('${model}')">Rename</button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteModel('${model}')">Delete</button>
+                                    </td>
+                                </tr>
+                            `;
+                            modelList.insertAdjacentHTML('beforeend', row);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching models:', error));
+            }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Call fetchModels function initially to populate the list
+            fetchModels();
+
+            // Refresh the model list every 5 seconds
+            setInterval(fetchModels, 5000); // Adjust the interval as needed
+        });
+
+        // Function to handle renaming a model
+        function renameModel(modelName) {
+            // Prompt user to enter new name
+            const newName = prompt('Enter new name for the model:', modelName);
+            if (newName !== null) {
+                // Send request to server to rename the model
+                fetch(`/rename_model?old_name=${encodeURIComponent(modelName)}&new_name=${encodeURIComponent(newName)}`, {
+                        method: 'POST'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message); // Display success message
+                        fetchModels(); // Refresh the model list
+                    })
+                    .catch(error => console.error('Error renaming model:', error));
+            }
+        }
+
+        // Function to handle deleting a model
+        function deleteModel(modelName) {
+            // Confirm deletion with user
+            if (confirm(`Are you sure you want to delete the model "${modelName}"?`)) {
+                // Send request to server to delete the model
+                fetch(`/delete_model?model_name=${encodeURIComponent(modelName)}`, {
+                        method: 'POST'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message); // Display success message
+                        fetchModels(); // Refresh the model list
+                    })
+                    .catch(error => console.error('Error deleting model:', error));
+            }
+        }
+    </script>
+</body>
+
+</html>

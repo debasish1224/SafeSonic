@@ -78,6 +78,15 @@ h1 {
     background-color: #7091E6 ;
 }
 
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: black; /* Change icon color to black */
+}
+
+.carousel-control-prev, .carousel-control-next {
+    filter: invert(100%); /* Invert the color of the icon */
+}
+
     /* Custom styles for FAQ section */
     #faq {
         padding-top: 50px; /* Add top padding */
@@ -114,13 +123,50 @@ h1 {
         color: #000000; /* Text color */
         border-radius: 5px; /* Rounded corners */
         text-align: justify;
-        margin-left: 10%;
+        /* margin-left: 10%; */
         margin-bottom: 15px;
     }
 
     h5{
-        text-align:justify;
-        margin-left: 10%;
+        text-align:left;
+        /* margin-left: 10%; */
         
         
+    }
+
+    /* cardview design */
+
+    .container {
+        margin-top: 50px;
+    }
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    .card-body {
+        padding: 40px;
+    }
+    .card-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    .btn-primary, .btn-success {
+        font-weight: bold;
+        border-radius: 25px;
+        padding: 12px 30px;
+        margin-top: 20px;
+        transition: 0.3s;
+    }
+    .btn-primary:hover, .btn-success:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    img {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
     }

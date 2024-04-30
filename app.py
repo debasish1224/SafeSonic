@@ -232,6 +232,22 @@ def test_model():
     return detected_speakers
 
 
+def get_trained_models():
+    model_folder = MODEL_FOLDER  # Use the MODEL_FOLDER variable for the path to the trained models folder
+    trained_models = []  # Initialize a list to store trained model names
+    
+    # Check if the model folder exists
+    if os.path.exists(model_folder):
+        # Iterate through each file in the model folder
+        for file_name in os.listdir(model_folder):
+            # Check if the file is a trained model (ends with '.gmm')
+            if file_name.endswith('.gmm'):
+                # Add the trained model name to the list
+                trained_models.append(file_name)
+    
+    return trained_models
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -276,7 +292,60 @@ def test():
         return render_template('result.html', speakers=detected_speakers)
     return render_template('record_test.html')
 
+@app.route('/get_models')
+def getModel():
+    # Get the list of trained models
+    models = get_trained_models()
+    # Return the list of models as JSON
+    return jsonify({'models': models})
 
+@app.route('/dashboard')
+def dashboard():
+    # Get the list of trained models
+    models = get_trained_models()
+    # Render the dashboard template and pass the list of trained models to it
+    return render_template('dashboard.html', models=models)
+
+@app.route('/rename_model', methods=['POST'])
+def rename_model():
+    # Get the old and new model names from the request
+    old_name = request.args.get('old_name')
+    new_name = request.args.get('new_name')
+
+    # Ensure that the new name has the '.gmm' extension
+    if not new_name.endswith('.gmm'):
+        new_name += '.gmm'
+
+    # Generate file paths for old and new model names
+    old_model_path = os.path.join(MODEL_FOLDER, old_name)
+    new_model_path = os.path.join(MODEL_FOLDER, new_name)
+
+    try:
+        # Rename the model file
+        os.rename(old_model_path, new_model_path)
+        # Return a success message
+        return jsonify({'message': f'Model {old_name} renamed to {new_name} successfully'})
+    except FileNotFoundError:
+        # If the old model file doesn't exist, return an error message
+        return jsonify({'message': f'Model {old_name} not found'}), 404
+
+@app.route('/delete_model', methods=['POST'])
+def delete_model():
+    # Get the model name to delete from the request
+    model_name = request.args.get('model_name')
+
+    # Generate file path for the model to delete
+    model_path = os.path.join(MODEL_FOLDER, model_name)
+
+    try:
+        # Delete the model file
+        os.remove(model_path)
+        # Return a success message and the updated list of models
+        models = get_trained_models()
+        return jsonify({'message': f'Model {model_name} deleted successfully', 'models': models})
+    except FileNotFoundError:
+        # If the model file doesn't exist, return an error message
+        return jsonify({'message': f'Model {model_name} not found'}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

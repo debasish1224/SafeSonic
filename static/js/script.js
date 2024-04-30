@@ -66,9 +66,12 @@ function validatePassword(password) {
 }
 
 // Function to show the logout modal
+// Function to show the logout modal
 function showLogoutModal() {
     // Check if the user is logged in
     if (auth.currentUser) {
+        // Show user email
+        document.getElementById('userEmail').textContent = auth.currentUser.email;
         // Show logout modal
         $('#logoutModal').modal('show');
     }
@@ -121,7 +124,10 @@ function loginUser() {
                 return auth.signOut();
             }
             // console.log('User logged in:', user);
-            alert('Login Successfully !....')
+            // alert('Login Successfully !....')
+            // Clear email and password fields
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
             // Update UI
             updateUIAfterLogin(user);
             // Hide loader
@@ -253,7 +259,7 @@ function logoutUser() {
     auth.signOut().then(() => {
         // Sign-out successful.
         console.log('User signed out');
-        alert('Sign out Successfully !....');
+        // alert('Sign out Successfully !....');
         // Hide logout modal
         $('#logoutModal').modal('hide');
         // Show login and signup links
@@ -267,6 +273,10 @@ function logoutUser() {
         console.error('Logout error:', error);
     });
 }
+
+window.addEventListener('load', () => {
+    logoutUser();
+});
 
 // Function to handle "Forgot Password?" button click
 document.querySelector('#forgotPassword').addEventListener('click', function (event) {
@@ -313,36 +323,57 @@ function resetPassword(email) {
 
 
     // Function to check if the user is logged in
-    function isLoggedIn() {
-        // Assume isLoggedIn() returns true if the user is logged in, false otherwise
-        // Here, you can implement your logic to check if the user is logged in
-        // For demonstration purposes, let's assume the user is logged in
+   // Function to check if the user is logged in
+// Function to check if the user is logged in
+function isLoggedIn() {
+    console.log("function called")
+    console.log(auth.currentUser)
+    
+    // Check if 'auth' is defined and if the user is logged in
+    if (typeof auth !== 'undefined' && auth.currentUser) {
+        return true;
+    } else {
         return false;
     }
+}
 
-    // Function to handle the click event on the "Record Voice" button
-    function recordVoiceClicked() {
-        if (isLoggedIn()) {
-            // User is logged in, navigate to the record voice page
-            window.location.href = "{{ url_for('record_train') }}";
-        } else {
-            // User is not logged in, display an alert and open the login modal
-            alert("Please log in to access this feature.");
-            $('#loginModal').modal('show'); // Open the login modal
-        }
-    }
 
-    // Function to handle the click event on the "Match Your Audio" button
-    function matchAudioClicked() {
-        if (isLoggedIn()) {
-            // User is logged in, navigate to the match audio page
-            window.location.href = "{{ url_for('record_test') }}";
-        } else {
-            // User is not logged in, display an alert and open the login modal
-            alert("Please log in to access this feature.");
-            $('#loginModal').modal('show'); // Open the login modal
-        }
+// Function to handle the click event on the "Record Voice" button
+function recordVoiceClicked() {
+    if (isLoggedIn()) {
+        // User is logged in, navigate to the record voice page
+         window.location.href = "/record_train";
+        console.log("User logged in, navigating to record train page");
+    } else {
+        // User is not logged in, display an alert and open the login modal
+        alert("Please log in to access this feature.");
+        $('#loginModal').modal('show'); // Open the login modal
     }
+}
+
+function recordVoiceClicked2() {
+    if (isLoggedIn()) {
+        // User is logged in, navigate to the record voice page
+         window.location.href = "/record_test";
+        console.log("User logged in, navigating to record train page");
+    } else {
+        // User is not logged in, display an alert and open the login modal
+        alert("Please log in to access this feature.");
+        $('#loginModal').modal('show'); // Open the login modal
+    }
+}
+
+
+// Attach click event handlers to elements with IDs 'logincheck' and 'logincheck2'
+document.getElementById('logincheck').addEventListener('click', recordVoiceClicked);
+document.getElementById('logincheck2').addEventListener('click', recordVoiceClicked2);
+
+
+//user dashboard
+
+
+
+  
 
 
 
