@@ -312,4 +312,39 @@ function resetPassword(email) {
 }
 
 
+    // Function to check if the user is logged in
+    function isLoggedIn() {
+        // Assume isLoggedIn() returns true if the user is logged in, false otherwise
+        // Here, you can implement your logic to check if the user is logged in
+        // For demonstration purposes, let's assume the user is logged in
+        return false;
+    }
+
+    // Function to handle the click event on the "Record Voice" button
+    function recordVoiceClicked() {
+        if (isLoggedIn()) {
+            // User is logged in, navigate to the record voice page
+            window.location.href = "{{ url_for('record_train') }}";
+        } else {
+            // User is not logged in, display an alert and open the login modal
+            alert("Please log in to access this feature.");
+            $('#loginModal').modal('show'); // Open the login modal
+        }
+    }
+
+    // Function to handle the click event on the "Match Your Audio" button
+    function matchAudioClicked() {
+        if (isLoggedIn()) {
+            // User is logged in, navigate to the match audio page
+            window.location.href = "{{ url_for('record_test') }}";
+        } else {
+            // User is not logged in, display an alert and open the login modal
+            alert("Please log in to access this feature.");
+            $('#loginModal').modal('show'); // Open the login modal
+        }
+    }
+
+
+
+
 
