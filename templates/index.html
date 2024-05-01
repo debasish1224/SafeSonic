@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speaker Identification System</title>
+    <title>Safe Sonic</title>
+    <link rel="icon" type="image/png" href="/static/SafeSonic_Logo.png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <script type="module" src="{{ url_for('static', filename='js/script.js') }}"></script>
@@ -15,7 +16,7 @@
         <div class="container-fluid">
             <a class="navbar-brand text-white" href="#">
                 <b>
-                  <img src="/static/MAINLOGO.jpg" alt="Your Logo" height="35" width="50" />
+                  <img src="/static/SafeSonic_Logo.png" alt="Your Logo" height="35" width="50" />
                   
                 </b>
                 </a>
@@ -78,51 +79,50 @@
 
 
     <!-- Login Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">LOGIN</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel" >LOGIN</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <!-- Add your login form elements here -->
+            <form>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="loginEmail" placeholder="Enter email" required>
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                        else.</small>
                 </div>
-                <div class="modal-body">
-                    <!-- Add your login form elements here -->
-                    <form>
-                        <div class="form-group">
-
-                            <input type="email" class="form-control" id="loginEmail" placeholder="Enter email" required>
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                                else.</small>
-                        </div>
-                        <div class="form-group">
-
-                            <input type="password" class="form-control" id="loginPassword" placeholder="Password"
-                                required>
-                        </div>
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary mt-3">Log in</button>
-                        </div>
-                    </form>
-                    <!-- Loader -->
-                    <div class="d-flex justify-content-center align-items-center loader-container">
-                        <div class="spinner-border loader" role="status" style="display: none;">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div>
-                    <div class="text-center mt-3">
-                        <button class="btn btn-link" id="forgotPassword">Forgot Password?</button>
-                    </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Password"
+                        required>
                 </div>
-                <div class="modal-footer">
-                    <p>New User? <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal"
-                            data-target="#signupModal">Sign up</button></p>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary mt-3">Log in</button>
+                </div>
+            </form>
+            <!-- Loader -->
+            <div class="d-flex justify-content-center align-items-center loader-container">
+                <div class="spinner-border loader" role="status" style="display: none;">
+                    <span class="sr-only">Loading...</span>
                 </div>
             </div>
+            <div class="text-center mt-3">
+                <button class="btn btn-link" id="forgotPassword">Forgot Password?</button>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="mb-0">New User? <button type="button" class="btn btn-primary" data-dismiss="modal"
+                    data-toggle="modal" data-target="#signupModal">Sign up</button></p>
         </div>
     </div>
+</div>
+</div>
 
     <!-- Signup Modal -->
     <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel"
@@ -130,7 +130,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="signupModalLabel">SIGN UP</h5>
+                    <h5 class="modal-title" id="signupModalLabel" title="Click to sign up">SIGN UP</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -202,22 +202,28 @@
         </div>
     </div>
 
+    <!-- Card view i.e. main window start here  -->
+
     <div class="container">
         <br><br>
         <div class="card shadow">
             <div class="card-body">
                 <b>
-                    <img src="/static/MAINLOGO.jpg" alt="Your Logo" height="50%" width="50%" />
+                    <img src="/static/SafeSonic_Logo.png" alt="Your Logo" height="30%" width="30%" />
                     
                   </b>
                 <br>
-                <a  id="logincheck" class="btn btn-primary" >Add Voice</a>
-                <a  id="logincheck2" class="btn btn-success" >Match your Audio</a>
+                <a  id="logincheck" class="btn btn-primary" title="Click to add voice" >Add Voice</a>
+                <a  id="logincheck2" class="btn btn-success" title = "Click to verify your voice " >Match your Audio</a>
                 
             </div>
         </div>
     </div>
+
+
     <br><br><br>
+
+    <!-- About us start here -->
 
     <div id="about-us">
         <br>
@@ -258,6 +264,8 @@
                                     <div class="card-body">
                                         <h5 class="card-title text-center">DEBASISH CHATTERJEE</h5>
                                         <p class="card-text text-center">Registration No = 20040445005</p>
+                                        <p class="card-text text-center">Session : 2021-2024</p>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -274,6 +282,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title text-center">ANJAN KUMAR VISHWAKARMA</h5>
                                         <p class="card-text text-center">Registration No = 20040440007</p>
+                                        <p class="card-text text-center">Session : 2020-2024</p>
                                     </div>
                                 </div>
                             </div>
@@ -290,6 +299,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title text-center">ROSHAN KUMAR SINGH</h5>
                                         <p class="card-text text-center">Registration No = 20040445015</p>
+                                        <p class="card-text text-center">Session : 2021-2024</p>
                                     </div>
                                 </div>
                             </div>
@@ -306,6 +316,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title text-center">RANJEET PANDIT</h5>
                                         <p class="card-text text-center">Registration No = 20040440031</p>
+                                        <p class="card-text text-center">Session : 2020-2024</p>
                                     </div>
                                 </div>
                             </div>
@@ -322,6 +333,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title text-center">RAJIV RANJAN SINGH</h5>
                                         <p class="card-text text-center">Registration No = 20040445014</p>
+                                        <p class="card-text text-center">Session : 2021-2024</p>
                                     </div>
                                 </div>
                             </div>
