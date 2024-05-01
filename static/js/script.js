@@ -422,6 +422,7 @@ function recordVoiceClicked2() {
 }
 
 
+
 // Attach click event handlers to elements with IDs 'logincheck' and 'logincheck2'
 document.getElementById('logincheck').addEventListener('click', recordVoiceClicked);
 document.getElementById('logincheck2').addEventListener('click', recordVoiceClicked2);
