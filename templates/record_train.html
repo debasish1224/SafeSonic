@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #ede8f5;
             margin: 0;
             padding: 0;
             text-align: center;
@@ -80,9 +80,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>Record Training Samples</h1>
-        <p>Please speak into your microphone to record training samples.</p>
-        
+        <!-- <h1>Record Voice To Train</h1> -->
+        <p>Please press the start recording button and speak into your microphone to record.</p>        
         <div class="form-container">
             <form action="{{ url_for('record_train') }}" method="post">
                 <label for="name">Your Name:</label>
@@ -103,11 +102,18 @@
     <script>
         const socket = io();
 
+        let recordingStarted = false;
+
         // Function to handle incoming messages
         socket.on('message', function (message) {
             const messagesDiv = document.getElementById('messages');
             messagesDiv.innerHTML += '<p>' + message + '</p>';
+
+            // Set recordingStarted to true when the recording process starts
+        recordingStarted = true;
         });
+
+        
 
         // Function to handle the JSON response and display the message as an alert
     function handleResponse(response) {
@@ -124,15 +130,25 @@
         .then(response => response.json())
         .then(data => handleResponse(data));
     });
+
+    // Add event listener to the Train Model button
     document.getElementById('testModelForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
-            fetch('/train', {
-                method: 'POST',
-                body: new FormData(this)
-            })
-            .then(response => response.json())
-            .then(data => handleResponse(data));
-        });
+    event.preventDefault(); // Prevent the default form submission
+    
+    // Check if recording has started before allowing training
+    if (recordingStarted) {
+        fetch('/train', {
+            method: 'POST',
+            body: new FormData(this)
+        })
+        .then(response => response.json())
+        .then(data => handleResponse(data));
+    } else {
+        // Display an alert indicating that recording has not started
+        alert('Please start recording before training the model.');
+    }
+});
+
     </script>
 </body>
 </html>
