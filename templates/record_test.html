@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #ede8f5;
             margin: 0;
             padding: 0;
             text-align: center;
@@ -54,8 +54,8 @@
     </style>
 </head>
 <body>
-    <h1>Record Test Sample</h1>
-    <p>Please speak into your microphone to record a test sample.</p>
+    <!-- <h1>Record Voice </h1> -->
+    <p>Please press the start recording button and speak into your microphone to record.</p>
     <div class="container">
         <div class="form-container">
             <form id="recordTestForm" action="{{ url_for('record_test') }}" method="post">
@@ -76,10 +76,14 @@
     <script>
         const socket = io();
 
+        let recordingStarted1 = false; // Variable to track recording status
+
         // Function to handle incoming messages
         socket.on('message', function (message) {
             const messagesDiv = document.getElementById('messages');
             messagesDiv.innerHTML += '<p>' + message + '</p>';
+
+            recordingStarted1 = true; // Set recording status to true when the message is received
         });
         // Function to handle the JSON response and display the message as an alert
         function handleResponse(response) {
@@ -94,7 +98,16 @@
                 body: new FormData(this)
             })
             .then(response => response.json())
-            .then(data => handleResponse(data));
+            .then(data => {
+                handleResponse(data);
+                // Once recording is completed, make the test model button visible
+                if (recordingStarted1) {
+                    document.getElementById('testform').style.display = 'block';
+                } else {
+                    // Display an alert indicating that recording has not started
+                    alert('Please start recording before testing the model.');
+                }
+            });
         });
     
     </script>
