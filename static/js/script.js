@@ -2,26 +2,25 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.2/firebase
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js';
 
 
-//Your Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyCFn92ld5RXyzfyKoO9MLx6lrWIVVlSW_Y",
-    authDomain: "speakeridentificationsystem.firebaseapp.com",
-    projectId: "speakeridentificationsystem",
-    storageBucket: "speakeridentificationsystem.appspot.com",
-    messagingSenderId: "472860465046",
-    appId: "1:472860465046:web:ffbbf188f4ab9a21caafb7",
-    measurementId: "G-T1K75N260B"
-};
+// Your Firebase configuration
 // const firebaseConfig = {
-//     apiKey: "AIzaSyDx6w33VvYCQZ7LrFbEMkb0977pSJsUobc",
-//     authDomain: "speaker-identification-system.firebaseapp.com",
-//     projectId: "speaker-identification-system",
-//     storageBucket: "speaker-identification-system.appspot.com",
-//     messagingSenderId: "733461261375",
-//     appId: "1:733461261375:web:56efe66791cc379cfc9c8a",
-//     measurementId: "G-2G3KE344MS"
+//     apiKey: "AIzaSyCFn92ld5RXyzfyKoO9MLx6lrWIVVlSW_Y",
+//     authDomain: "speakeridentificationsystem.firebaseapp.com",
+//     projectId: "speakeridentificationsystem",
+//     storageBucket: "speakeridentificationsystem.appspot.com",
+//     messagingSenderId: "472860465046",
+//     appId: "1:472860465046:web:ffbbf188f4ab9a21caafb7",
+//     measurementId: "G-T1K75N260B"
 // };
-
+const firebaseConfig = {
+    apiKey: "AIzaSyDx6w33VvYCQZ7LrFbEMkb0977pSJsUobc",
+    authDomain: "speaker-identification-system.firebaseapp.com",
+    projectId: "speaker-identification-system",
+    storageBucket: "speaker-identification-system.appspot.com",
+    messagingSenderId: "733461261375",
+    appId: "1:733461261375:web:56efe66791cc379cfc9c8a",
+    measurementId: "G-2G3KE344MS"
+};
 
 // Initialize Firebase and set up session persistence
 const app = initializeApp(firebaseConfig);
@@ -55,8 +54,19 @@ function validatePassword(password) {
 function showLogoutModal() {
     // Check if the user is logged in
     if (auth.currentUser) {
-        // Show user email
-        document.getElementById('userEmail').textContent = auth.currentUser.email;
+        // Show user email and user name
+        // Fetch user details from Flask backend
+        fetch('/user_details/' + auth.currentUser.email)  // Concatenate the user_email variable
+            .then(response => response.json())
+            .then(data => {
+                // Update user name in the Dashboard modal
+                document.getElementById('userName').textContent = data.first_name + ' ' + data.last_name;
+                // Update user email in the Dashboard modal
+                document.getElementById('userEmail').textContent = data.email;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         // Show logout modal
         $('#logoutModal').modal('show');
     }
@@ -75,7 +85,7 @@ function startLogoutTimer() {
     logoutTimer = setTimeout(() => {
         // Call logout function after 10 minutes of inactivity
         logoutUser2();
-    }, 60000); // 10 minutes in milliseconds
+    }, 600000); // 10 minutes in milliseconds
 }
 
 // Function to reset the logout timer on user activity
@@ -223,7 +233,7 @@ function signupUser() {
             // Signed up
             const user = userCredential.user;
             // console.log('User signed up:', user);
-
+            hideLoader();
 
             sendVerificationEmail(user);
 
@@ -286,6 +296,37 @@ document.querySelector('#signupModal form').addEventListener('submit', function 
     event.preventDefault();
     signupUser();
 });
+document.getElementById('signupForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Show loader
+    document.querySelector('.loader-container').style.display = 'flex';
+
+    // Get form data
+    const formData = new FormData(this);
+
+    // Send form data to Flask endpoint using fetch
+    fetch('/signup', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Hide loader
+            document.querySelector('.loader-container').style.display = 'none';
+
+            // Handle response
+            alert(data.message); // You can replace this with your desired action (e.g., showing a success message or redirecting)
+        })
+        .catch(error => {
+            // Hide loader
+            document.querySelector('.loader-container').style.display = 'none';
+
+            console.error('Error:', error);
+        });
+});
+
+
 
 document.querySelector('#modalLogout').addEventListener('click', function (event) {
     event.preventDefault();
@@ -386,7 +427,7 @@ function resetPassword(email) {
 function isLoggedIn() {
     // console.log("function called")
     // console.log(auth.currentUser)
-    
+
     // Check if 'auth' is defined and if the user is logged in
     if (typeof auth !== 'undefined' && auth.currentUser) {
         return true;
@@ -400,7 +441,7 @@ function isLoggedIn() {
 function recordVoiceClicked() {
     if (isLoggedIn()) {
         // User is logged in, navigate to the record voice page
-         window.location.href = "/record_train";
+        window.location.href = "/record_train";
         // console.log("User logged in, navigating to record train page");
     } else {
         // User is not logged in, display an alert and open the login modal
@@ -412,7 +453,7 @@ function recordVoiceClicked() {
 function recordVoiceClicked2() {
     if (isLoggedIn()) {
         // User is logged in, navigate to the record voice page
-         window.location.href = "/record_test";
+        window.location.href = "/record_test";
         // console.log("User logged in, navigating to record train page");
     } else {
         // User is not logged in, display an alert and open the login modal
@@ -422,7 +463,9 @@ function recordVoiceClicked2() {
 }
 
 
-
 // Attach click event handlers to elements with IDs 'logincheck' and 'logincheck2'
 document.getElementById('logincheck').addEventListener('click', recordVoiceClicked);
 document.getElementById('logincheck2').addEventListener('click', recordVoiceClicked2);
+
+
+
