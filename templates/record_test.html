@@ -1,98 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Record Test Sample</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* Additional CSS styles */
         body {
             font-family: Arial, sans-serif;
-            background-color: #ede8f5;
+            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
             text-align: center;
         }
 
-        h1 {
-            color: #333;
-            margin-top: 50px;
-        }
-
         .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
             margin-top: 50px;
         }
 
-        .form-container {
+        .custom-card-body {
             background-color: #fff;
-            padding: 20px;
+            padding: 100px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
+        #messages {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        #messages .message-container {
+            background-color: #dff0d8;
+            border-color: #d0e9c6;
+            color: #3c763d;
+            padding: 10px;
             border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            margin-bottom: 10px;
         }
 
-        input[type="submit"]:hover {
-            background-color: #45a049;
+        #messages .message-container p {
+            margin: 0;
         }
 
-        input[type="submit"]:focus {
-            outline: none;
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .header-container button {
+            position: absolute;
+            left: 0;
+        }
+
+        h1 {
+            margin: 0 auto;
+        }
+
+        #timer {
+            font-size: 24px;
+            margin-top: 20px;
+            color: #ff0000;
         }
     </style>
 </head>
+
 <body>
-    <!-- <h1>Record Voice </h1> -->
-    <p>Please press the start recording button and speak into your microphone to record.</p>
     <div class="container">
-        <div class="form-container">
-            <form id="recordTestForm" action="{{ url_for('record_test') }}" method="post">
-                <input type="submit" value="Start Recording">
-            </form>
+        <div class="header-container mt-5">
+            <button type="button" title="Back" onclick="goBack()" style="border: none; background-color: transparent;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M7.354 12.354a.5.5 0 0 0 0-.708L4.707 9.5H14.5a.5.5 0 0 0 0-1H4.707l2.647-2.646a.5.5 0 0 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708 0z" />
+                </svg>
+            </button>
+            <h1>Record Test Sample</h1>
         </div>
-        <div id="messages"></div> <!-- Container for messages -->
-        <div  class="form-container">
-            <form id="testform" action="{{ url_for('test') }}" method="post">
-                <input type="submit" value="Test Model">
-            </form>
+        <p>Please speak into your microphone to record a test sample.</p>
+
+        <div class="row">
+            <!-- Left Box -->
+            <div class="col-md-6">
+                <div>
+                    <div class="custom-card-body">
+                        <form id="recordTestForm" action="{{ url_for('record_test') }}" method="post">
+                            <button type="submit" class="btn btn-success btn-lg btn-block">Start Recording</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Box -->
+            <div class="col-md-6">
+                <div>
+                    <div class="custom-card-body">
+                        <form id="testform" action="{{ url_for('test') }}" method="post">
+                            <button type="submit" class="btn btn-primary btn-lg btn-block" id="testModelBtn" disabled>Test Model</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div id="timer" class="mt-4"></div> <!-- Timer display -->
+        <div id="messages" class="mt-4"></div> <!-- Container for messages -->
     </div>
 
-    <!-- Script for handling form submission and displaying alerts -->
-    <!-- SocketIO setup -->
+    <!-- Bootstrap JS and SocketIO setup -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
-        const socket = io();
+        function goBack() {
+            window.history.back();
+        }
 
-        let recordingStarted1 = false; // Variable to track recording status
+        const socket = io();
 
         // Function to handle incoming messages
         socket.on('message', function (message) {
             const messagesDiv = document.getElementById('messages');
-            messagesDiv.innerHTML += '<p>' + message + '</p>';
-
-            recordingStarted1 = true; // Set recording status to true when the message is received
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message-container');
+            messageContainer.innerHTML = '<p>' + message + '</p>';
+            messagesDiv.appendChild(messageContainer);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         });
-        // Function to handle the JSON response and display the message as an alert
+
+        // Function to handle the JSON response
         function handleResponse(response) {
+            // No alert, process the response if needed
             alert(response.message);
         }
 
         // Send a POST request to the server when the form is submitted
-        document.getElementById('recordTestForm').addEventListener('submit', function(event) {
+        document.getElementById('recordTestForm').addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent the default form submission
+            const testModelBtn = document.getElementById('testModelBtn');
+            const startRecordingBtn = this.querySelector('button[type="submit"]');
+
+            // Disable buttons and clear previous messages
+            startRecordingBtn.setAttribute('disabled', 'true');
+            testModelBtn.setAttribute('disabled', 'true');
+            clearMessages();
+
+            // Start the 10-second timer
+            startTimer(10, startRecordingBtn, testModelBtn);
+
             fetch('/record_test', {
                 method: 'POST',
                 body: new FormData(this)
@@ -100,16 +160,53 @@
             .then(response => response.json())
             .then(data => {
                 handleResponse(data);
-                // Once recording is completed, make the test model button visible
-                if (recordingStarted1) {
-                    document.getElementById('testform').style.display = 'block';
-                } else {
-                    // Display an alert indicating that recording has not started
-                    alert('Please start recording before testing the model.');
-                }
+                // Enable the Test Model button after successful recording
+                testModelBtn.removeAttribute('disabled');
             });
         });
-    
+
+        // Add click event listener to the Test Model button
+        document.getElementById('testModelBtn').addEventListener('click', function (event) {
+            if (this.disabled) {
+                event.preventDefault();
+                alert('Please record your voice first.');
+            }
+        });
+
+        // Function to clear all message containers
+        function clearMessages() {
+            const messagesDiv = document.getElementById('messages');
+            while (messagesDiv.firstChild) {
+                messagesDiv.removeChild(messagesDiv.firstChild);
+            }
+        }
+
+        // Function to start the timer
+        function startTimer(duration, startRecordingBtn, testModelBtn) {
+            const timerDiv = document.getElementById('timer');
+            let timeLeft = duration;
+            timerDiv.textContent = `Recording finishes in ${timeLeft} seconds`;
+
+            const timer = setInterval(() => {
+                timeLeft -= 1;
+                timerDiv.textContent = `Recording finishes in ${timeLeft} seconds`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timerDiv.textContent = '';
+                    startRecordingBtn.removeAttribute('disabled');
+                    testModelBtn.removeAttribute('disabled');
+                }
+            }, 1000);
+        }
+
+        // Reload the page if the user navigates back to it
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
     </script>
 </body>
+
 </html>
