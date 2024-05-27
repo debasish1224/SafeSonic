@@ -34,17 +34,33 @@
             font-size: 18px;
             margin-top: 10px;
         }
+        .thumbs-up {
+            display: inline-block;
+            width: 24px; /* Adjust the width as needed */
+            height: 24px; /* Adjust the height as needed */
+            /*background-image: url('https://media.giphy.com/media/gHugNOfUe71qw/giphy.gif');*/ /* Thumbs up GIF URL */
+            background-size: cover;
+            margin-left: 5px; /* Adjust the margin as needed */
+        }
+        .thumbs-down {
+            display: inline-block;
+            width: 24px; /* Adjust the width as needed */
+            height: 24px; /* Adjust the height as needed */
+            /*background-image: url('https://media.giphy.com/media/3o7TKQ5oHY5GUmn9ni/giphy.gif');*/ /* Thumbs down GIF URL */
+            background-size: cover;
+            margin-left: 5px; /* Adjust the margin as needed */
+        }
     </style>
 </head>
 <body>
-    <h1>Speaker Identification Result</h1>
+    <h1>Safe Sonic Result</h1>
     {% for speaker in speakers %}
     <div class="card {% if speaker != 'Not Matched' %} matched {% else %} unmatched {% endif %}">
         <h2>{{ speaker }}</h2>
         {% if speaker != 'Not Matched' %}
-        <div class="message">Congratulations! You are matched.</div>
+        <div class="message">Congratulations! You are matched. <span class="thumbs-up"></span></div>
         {% else %}
-        <div class="message">Sad! No match found.</div>
+        <div class="message">Sad! No match found. <span class="thumbs-down"></span></div>
         {% endif %}
     </div>
     {% endfor %}
